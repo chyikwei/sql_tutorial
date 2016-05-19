@@ -1,8 +1,8 @@
-package com.chyikwei.tutorial.sql.tests;
+package com.chyikwei.tutorial.sql.parser.tests;
 
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
-import com .chyikwei.tutorial.sql.Parser;
+import com.chyikwei.tutorial.sql.parser.Parser;
 
 /**
  * Created by chyikwei on 5/18/16.

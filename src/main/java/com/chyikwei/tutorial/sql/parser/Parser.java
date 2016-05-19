@@ -1,10 +1,12 @@
-package com.chyikwei.tutorial.sql;
+package com.chyikwei.tutorial.sql.parser;
+
+import org.slf4j.*;
 
 /**
  * Created by chyikwei on 5/18/16.
  */
 public class Parser {
-
+    static Logger logger = LoggerFactory.getLogger(Parser.class);
     private boolean isSuccess;
 
     public Parser() {
@@ -13,7 +15,8 @@ public class Parser {
 
     public boolean parse(String raw_query){
         isSuccess = true;
-        System.out.println(raw_query);
+        logger.info("start parsing...");
+        logger.debug(raw_query);
         return isSuccess;
     }
 
