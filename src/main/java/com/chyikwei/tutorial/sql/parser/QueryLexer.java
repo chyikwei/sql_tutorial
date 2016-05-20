@@ -43,9 +43,24 @@ public class QueryLexer extends Lexer{
             switch (head) {
                 case '=':
                     consume();
-                    return new Token(Token.TokenType.EQUAL);
+                    return new Token(Token.Type.EQUAL);
+                case '>':
+                    consume();
+                    return new Token(Token.Type.GREATER);
+                case '<':
+                    consume();
+                    return new Token(Token.Type.LESS);
+                case ';':
+                    consume();
+                    return new Token(Token.Type.COMMA);
+                case '(':
+                    consume();
+                    return new Token(Token.Type.LBRACK);
+                case ')':
+                    consume();
+                    return new Token(Token.Type.RBRACK);
             }
         }
-        return new Token(Token.TokenType.EOF);
+        return new Token(Token.Type.EOF);
     }
 }

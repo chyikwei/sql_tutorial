@@ -10,8 +10,19 @@ import com.chyikwei.tutorial.sql.parser.Token;
 public class TokenTest {
 
     @Test
-    public void createTokenResult() {
-        Token t = new Token(Token.TokenType.CREATE);
-        assertEquals(t.type, Token.TokenType.CREATE);
+    public void testCreateTokenFormat() {
+        Token t = new Token(Token.Type.CREATE);
+        assertEquals(t.type, Token.Type.CREATE);
+        assertFalse(t.text.isPresent());
+        assertEquals(t.toString(), "<CREATE>");
+
+    }
+
+    @Test
+    public void TestEofTokenFormat() {
+        Token t = new Token(Token.Type.EOF);
+        assertEquals(t.type, Token.Type.EOF);
+        assertFalse(t.text.isPresent());
+        assertEquals(t.toString(), "<EOF>");
     }
 }
