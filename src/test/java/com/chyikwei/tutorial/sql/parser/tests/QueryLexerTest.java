@@ -12,7 +12,15 @@ import com.chyikwei.tutorial.sql.parser.Token;
 public class QueryLexerTest {
 
     @Test
-    public void testSimpleSelet(){
+    public void testEOF(){
+        String q = "";
+        QueryLexer lexer = new QueryLexer(q);
+        Token eof = new Token(Token.TokenType.EOF);
+        assertEquals(eof.type, lexer.nextToken().type);
+    }
+    /**
+    @Test
+    public void testSelect(){
         String q = "select col_1 from table_1;";
         Token[] tokens = {
                 new Token(Token.TokenType.SELECT),
@@ -29,5 +37,6 @@ public class QueryLexerTest {
         }
 
     }
+    **/
 
 }
