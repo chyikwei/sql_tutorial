@@ -8,12 +8,14 @@ import java.util.Optional;
 
 public class Token {
 
+    // all terminal tokens
     public enum TokenType {
-        CREATE, INSERT ,TABLE,
-        SELECT, UPDATE, FROM,
-        WHERE, NOT, INT, INDEX,
-        CHAR, FLOAT, TEXT, SUM,
-        MIN, MAX, AVERAGE
+        SELECT, CREATE, INSERT,
+        TABLE, FROM, WHERE,
+        INT, STR,
+        LBRACK, RBRACK, COMMA,
+        ASSIGN, EQUAL, UNEQUAL,
+        EOF,
     }
 
     public final TokenType type;
