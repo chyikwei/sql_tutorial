@@ -40,4 +40,26 @@ public class Token {
             return String.format("<%s>", this.type);
         }
     }
+
+    public boolean equals(Object o) {
+
+        if (!(o instanceof Token)) {
+            return false;
+        }
+        Token t = (Token) o;
+
+        if (this.type == t.type) {
+            if (this.text.isPresent()) {
+                if (t.text.isPresent()) {
+                    return this.text.get().equals(t.text.get());
+                } else {
+                    return false;
+                }
+            } else {
+                return !t.text.isPresent();
+            }
+        } else {
+            return false;
+        }
+    }
 }
