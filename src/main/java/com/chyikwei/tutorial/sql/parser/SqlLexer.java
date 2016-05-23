@@ -31,7 +31,7 @@ public class SqlLexer extends LookAheadLexer {
         }
     }
 
-    private Token parse_int() {
+    private Token parseInt() {
         StringBuffer buff = new StringBuffer();
         char c = ahead(0);
         while (isInt(c)){
@@ -45,7 +45,25 @@ public class SqlLexer extends LookAheadLexer {
         return new Token(Token.Type.INT, buff.toString());
     }
 
-    private Token parse_name() {
+    private Token createTokenFromString(String s) {
+        String sUpper = s.toUpperCase();
+        switch (sUpper) {
+            case "SELECT":
+                return new Token(Token.Type.SELECT);
+            case "CREATE":
+                return new Token(Token.Type.CREATE);
+            case "INSERT":
+                return new Token(Token.Type.INSERT);
+            case "FROM":
+                return new Token(Token.Type.FROM);
+            case "WHERE":
+                return new Token(Token.Type.WHERE);
+            default:
+                return new Token(Token.Type.VAR, s);
+        }
+    }
+
+    private Token parseVar() {
         StringBuffer buff = new StringBuffer();
         char c = ahead(0);
         while (isStr(c) || isInt(c)){
@@ -55,7 +73,26 @@ public class SqlLexer extends LookAheadLexer {
             c = ahead(0);
             logger.debug("after consume, look ahead = " + c);
         }
+        return createTokenFromString(buff.toString());
+    }
+
+    private Token parseStr() {
+        StringBuffer buff = new StringBuffer();
+        consume();
+        char c = ahead(0);
+        while (c != '\''){
+            logger.debug("look ahead = " + c);
+            buff.append(c);
+            consume();
+            c = ahead(0);
+            logger.debug("after consume, look ahead = " + c);
+        }
+        consume();
         return new Token(Token.Type.STR, buff.toString());
+    }
+
+    public boolean hasNext() {
+        return ahead(0) == EOF;
     }
 
     public Token nextToken() {
@@ -69,26 +106,52 @@ public class SqlLexer extends LookAheadLexer {
                     consume();
                     return new Token(Token.Type.EQUAL);
                 case '>':
-                    consume();
-                    return new Token(Token.Type.GREATER);
+                    if (ahead(1) == '=') {
+                        consume();
+                        consume();
+                        return new Token(Token.Type.GREATER_EQUAL);
+                    } else {
+                        consume();
+                        return new Token(Token.Type.GREATER);
+                    }
                 case '<':
-                    consume();
-                    return new Token(Token.Type.LESS);
-                case ';':
+                    if (ahead(1) == '=') {
+                        consume();
+                        consume();
+                        return new Token(Token.Type.LESS_EQUAL);
+                    } else {
+                        consume();
+                        return new Token(Token.Type.LESS);
+                    }
+                case '!':
+                    if (ahead(1) == '=') {
+                        consume();
+                        consume();
+                        return new Token(Token.Type.UNEQUAL);
+                    } else {
+                        consume();
+                        return new Token(Token.Type.NOT);
+                    }
+                case ',':
                     consume();
                     return new Token(Token.Type.COMMA);
+                case ';':
+                    consume();
+                    return new Token(Token.Type.SEMICOLON);
                 case '(':
                     consume();
                     return new Token(Token.Type.LBRACK);
                 case ')':
                     consume();
                     return new Token(Token.Type.RBRACK);
+                case '\'':
+                    return parseStr();
 
                 default:
                     if (isStr(c)) {
-                        return parse_name();
+                        return parseVar();
                     } else if (isInt(c)) {
-                        return parse_int();
+                        return parseInt();
                     } else {
                         throw new RuntimeException("unhandled char: " + c);
                     }

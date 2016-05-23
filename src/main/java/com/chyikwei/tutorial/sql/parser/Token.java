@@ -11,10 +11,12 @@ public class Token {
     // all terminal tokens
     public enum Type {
         SELECT, CREATE, INSERT,
-        TABLE, FROM, WHERE,
-        INT, STR,
-        LBRACK, RBRACK, COMMA,
-        EQUAL, NOT, GREATER, LESS,
+        FROM, WHERE,
+        INT, STR, VAR,
+        LBRACK, RBRACK, COMMA, SEMICOLON,
+        NOT, EQUAL, UNEQUAL,
+        GREATER, GREATER_EQUAL,
+        LESS, LESS_EQUAL,
         AND,
         EOF,
     }

@@ -8,6 +8,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import com.chyikwei.tutorial.sql.parser.SqlLexer;
 import com.chyikwei.tutorial.sql.parser.Token;
+import org.omg.IOP.TAG_ORB_TYPE;
 
 public class SqlLexerTest {
 
@@ -21,12 +22,13 @@ public class SqlLexerTest {
 
     @Test
     public void testSepcialChar(){
-        String q = "();";
+        String q = "( ) , ; ";
         SqlLexer lexer = new SqlLexer(q);
         Token[] targets = {
                 new Token(Token.Type.LBRACK),
                 new Token(Token.Type.RBRACK),
                 new Token(Token.Type.COMMA),
+                new Token(Token.Type.SEMICOLON),
                 new Token(Token.Type.EOF),
         };
         for (Token target : targets) {
@@ -39,9 +41,9 @@ public class SqlLexerTest {
         String q = "this is var123";
         SqlLexer lexer = new SqlLexer(q);
         Token[] targets = {
-                new Token(Token.Type.STR, "this"),
-                new Token(Token.Type.STR, "is"),
-                new Token(Token.Type.STR, "var123"),
+                new Token(Token.Type.VAR, "this"),
+                new Token(Token.Type.VAR, "is"),
+                new Token(Token.Type.VAR, "var123"),
                 new Token(Token.Type.EOF),
         };
         for (Token target : targets) {
@@ -58,6 +60,46 @@ public class SqlLexerTest {
                 new Token(Token.Type.INT, "456"),
                 new Token(Token.Type.INT, "789"),
                 new Token(Token.Type.EOF),
+        };
+        for (Token target : targets) {
+            assertEquals(target, lexer.nextToken());
+        }
+    }
+
+    @Test
+    public void testGreaterLessNotEqual(){
+        String q = "> = < >= <= ! !=";
+        SqlLexer lexer = new SqlLexer(q);
+        Token[] targets = {
+                new Token(Token.Type.GREATER),
+                new Token(Token.Type.EQUAL),
+                new Token(Token.Type.LESS),
+                new Token(Token.Type.GREATER_EQUAL),
+                new Token(Token.Type.LESS_EQUAL),
+                new Token(Token.Type.NOT),
+                new Token(Token.Type.UNEQUAL),
+                new Token(Token.Type.EOF),
+        };
+        for (Token target : targets) {
+            assertEquals(target, lexer.nextToken());
+        }
+    }
+
+    @Test
+    public void testSelectQuery(){
+        String q = "select var1 from table1 where var1 >= 'str1';";
+        SqlLexer lexer = new SqlLexer(q);
+        Token[] targets = {
+                new Token(Token.Type.SELECT),
+                new Token(Token.Type.VAR, "var1"),
+                new Token(Token.Type.FROM),
+                new Token(Token.Type.VAR, "table1"),
+                new Token(Token.Type.WHERE),
+                new Token(Token.Type.VAR, "var1"),
+                new Token(Token.Type.GREATER_EQUAL),
+                new Token(Token.Type.STR, "str1"),
+                new Token(Token.Type.SEMICOLON),
+                new Token(Token.Type.EOF)
         };
         for (Token target : targets) {
             assertEquals(target, lexer.nextToken());

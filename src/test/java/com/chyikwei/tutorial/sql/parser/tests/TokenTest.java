@@ -30,9 +30,9 @@ public class TokenTest {
     public void testEquals() {
         Token t1 = new Token(Token.Type.AND);
         Token t2 = new Token(Token.Type.AND);
-        Token t3 = new Token(Token.Type.STR, "var");
-        Token t4  = new Token(Token.Type.STR, "var");
-        Token t5  = new Token(Token.Type.STR, "var2");
+        Token t3 = new Token(Token.Type.VAR, "var");
+        Token t4  = new Token(Token.Type.VAR, "var");
+        Token t5  = new Token(Token.Type.VAR, "var2");
         assertEquals(t1, t2);
         assertEquals(t3, t4);
         assertNotEquals(t1, t3);
