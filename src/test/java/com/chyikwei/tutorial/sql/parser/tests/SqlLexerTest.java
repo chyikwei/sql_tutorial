@@ -105,26 +105,4 @@ public class SqlLexerTest {
             assertEquals(target, lexer.nextToken());
         }
     }
-
-    /**
-    @Test
-    public void testSelect(){
-        String q = "select col_1 from table_1;";
-        Token[] tokens = {
-                new Token(Token.Type.SELECT),
-                new Token(Token.Type.STR, "col_1"),
-                new Token(Token.Type.FROM),
-                new Token(Token.Type.STR, "table_1"),
-                new Token(Token.Type.COMMA),
-        };
-
-        SqlLexer lexer = new SqlLexer(q);
-        for (Token target: tokens){
-            Token current = lexer.nextToken();
-            assertEquals(target.type, current.type);
-        }
-
-    }
-    **/
-
 }
